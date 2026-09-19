@@ -1,4 +1,8 @@
 import "./style.css";
+import shiftOnIcon from "./assets/Shift_AN.png";
+import shiftOffIcon from "./assets/Shift_AUS.png";
+import enterIcon from "./assets/Enter.png";
+import backspaceIcon from "./assets/Backspace.png";
 
 const rows = [
   ["Q", "W", "E", "R", "T", "Z", "U", "I", "O", "P"],
@@ -15,9 +19,9 @@ const labels: Record<string, string> = {
 };
 
 const iconPaths: Record<string, string> = {
-  SHIFT: "./Shift_AUS.png",
-  BACKSPACE: "./Backspace.png",
-  ENTER: "./Enter.png",
+  SHIFT: shiftOffIcon,
+  BACKSPACE: backspaceIcon,
+  ENTER: enterIcon,
 };
 
 const keyboard = document.createElement("section");
@@ -32,8 +36,10 @@ function updateShiftIcon(button: HTMLButtonElement) {
     return;
   }
 
-  image.src = shiftActive ? "./Shift_AN.png" : "./Shift_AUS.png";
-  image.alt = shiftActive ? "Großbuchstaben aktiviert" : "Großbuchstaben deaktiviert";
+  image.src = shiftActive ? shiftOnIcon : shiftOffIcon;
+  image.alt = shiftActive
+    ? "Großbuchstaben aktiviert"
+    : "Großbuchstaben deaktiviert";
 }
 
 rows.forEach((row, rowIndex) => {
@@ -61,10 +67,7 @@ rows.forEach((row, rowIndex) => {
     if (key === "SHIFT") {
       button.addEventListener("click", () => {
         shiftActive = !shiftActive;
-        button.setAttribute(
-          "aria-pressed",
-          String(shiftActive),
-        );
+        button.setAttribute("aria-pressed", String(shiftActive));
         updateShiftIcon(button);
       });
 
