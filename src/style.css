@@ -75,10 +75,6 @@ body {
   grid-column: span 2;
 }
 
-.keyboard-row-3 .keyboard-key:first-child {
-  grid-column: span 2;
-}
-
 .keyboard-row-3 .keyboard-key:last-child {
   grid-column: span 4;
 }
@@ -106,6 +102,20 @@ body {
     transform 90ms ease,
     box-shadow 90ms ease,
     filter 90ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.keyboard-icon {
+  width: 72%;
+  height: 72%;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .keyboard-row-1 .keyboard-key:nth-child(4n + 1) {
