@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Lernwörter" />
-    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="manifest" href="./manifest.webmanifest?build=__BUILD_ID__" />
     <title>Lernwörter</title>
     <style id="app-background">
       #app {
@@ -17,6 +17,61 @@
   </head>
   <body>
     <div id="app"></div>
+
+    <script>
+      (() => {
+        const BUILD_ID = "__BUILD_ID__";
+        if (BUILD_ID === "__BUILD_ID__") return;
+
+        const BUILD_CHECK_URL =
+          `./version.json?from=${encodeURIComponent(BUILD_ID)}&t=${Date.now()}`;
+
+        fetch(BUILD_CHECK_URL, { cache: "no-store" })
+          .then((response) => response.ok ? response.json() : null)
+          .then((payload) => {
+            if (!payload || typeof payload.buildId !== "string" || payload.buildId === BUILD_ID) {
+              return;
+            }
+
+            const url = new URL(window.location.href);
+            url.searchParams.set("build", payload.buildId);
+            url.searchParams.set("refresh", String(Date.now()));
+            window.location.replace(url.href);
+          })
+          .catch(() => {
+            // Die App bleibt nutzbar, wenn der Versionscheck nicht erreichbar ist.
+          });
+      })();
+    </script>
+
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./sw.js?v=__BUILD_ID__", {
+              scope: "./",
+              updateViaCache: "none",
+            })
+            .then((registration) => {
+              void registration.update();
+
+              window.addEventListener("pageshow", () => {
+                void registration.update();
+              });
+
+              document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "visible") {
+                  void registration.update();
+                }
+              });
+            })
+            .catch(() => {
+              // Die App bleibt auch ohne Service Worker voll nutzbar.
+            });
+        });
+      }
+    </script>
+
     <script type="module" src="./src/main.ts"></script>
   </body>
 </html>
