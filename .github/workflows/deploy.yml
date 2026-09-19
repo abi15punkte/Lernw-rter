@@ -54,13 +54,21 @@ jobs:
           DEPLOY_BASE: /Lernw-rter/test/
         run: npm --prefix development-source run build
 
+      - name: Stamp development build version
+        run: |
+          printf '{"buildId":"${{ github.sha }}"}\n' > development-source/dist/version.json
+          find development-source/dist -type f \( -name '*.html' -o -name '*.js' -o -name '*.css' -o -name '*.webmanifest' \) -print0 \
+            | xargs -0 sed -i 's/__BUILD_ID__/${{ github.sha }}/g'
+
       - name: Assemble Pages site
         run: |
           rm -rf site
           mkdir -p site/test
           cp -R production-source/dist/. site/
           cp -R development-source/dist/. site/test/
-          printf '{"productionCommit":"%s","developmentCommit":"%s"}\n'             "$(git -C production-source rev-parse HEAD)"             "$(git -C development-source rev-parse HEAD)" > site/deployment-info.json
+          printf '{"productionCommit":"%s","developmentCommit":"%s"}\n' \
+            "$(git -C production-source rev-parse HEAD)" \
+            "$(git -C development-source rev-parse HEAD)" > site/deployment-info.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
