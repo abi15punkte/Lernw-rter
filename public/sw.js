@@ -26,18 +26,7 @@ self.addEventListener("activate", (event) => {
         )
       ),
       self.clients.claim(),
-    ]).then(async () => {
-      const clients = await self.clients.matchAll({
-        type: "window",
-        includeUncontrolled: true,
-      });
-
-      await Promise.all(
-        clients.map((client) =>
-          client.navigate(client.url).catch(() => undefined)
-        )
-      );
-    })
+    ])
   );
 });
 
