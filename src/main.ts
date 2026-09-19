@@ -81,6 +81,7 @@ rows.forEach((row, rowIndex) => {
       image.src = iconPaths[key];
       image.alt = labels[key] ?? key;
       image.draggable = false;
+      image.decoding = "async";
       button.append(image);
     } else if (/^[a-z]$/i.test(key)) {
       letterButtons.push({ button, letter: key });
