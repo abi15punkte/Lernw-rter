@@ -5,9 +5,9 @@ import enterIcon from "./assets/Enter.png";
 import backspaceIcon from "./assets/Backspace.png";
 
 const rows = [
-  ["Q", "W", "E", "R", "T", "Z", "U", "I", "O", "P"],
-  ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
-  ["SHIFT", "Y", "X", "C", "V", "B", "N", "M", "BACKSPACE"],
+  ["q", "w", "e", "r", "t", "z", "u", "i", "o", "p"],
+  ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
+  ["SHIFT", "y", "x", "c", "v", "b", "n", "m", "BACKSPACE"],
   ["SPACE", "ENTER"],
 ];
 
@@ -29,6 +29,7 @@ keyboard.className = "keyboard";
 keyboard.setAttribute("aria-label", "Bildschirmtastatur");
 
 let shiftActive = false;
+const letterButtons: Array<{ button: HTMLButtonElement; letter: string }> = [];
 
 function updateShiftIcon(button: HTMLButtonElement) {
   const image = button.querySelector<HTMLImageElement>(".keyboard-icon");
@@ -40,6 +41,27 @@ function updateShiftIcon(button: HTMLButtonElement) {
   image.alt = shiftActive
     ? "Großbuchstaben aktiviert"
     : "Großbuchstaben deaktiviert";
+}
+
+function updateLetterCase() {
+  for (const { button, letter } of letterButtons) {
+    const displayedLetter = shiftActive
+      ? letter.toUpperCase()
+      : letter.toLowerCase();
+
+    button.textContent = displayedLetter;
+    button.setAttribute("aria-label", displayedLetter);
+  }
+}
+
+function animateKeyPress(button: HTMLButtonElement) {
+  button.classList.remove("is-pressed");
+  void button.offsetWidth;
+  button.classList.add("is-pressed");
+
+  window.setTimeout(() => {
+    button.classList.remove("is-pressed");
+  }, 150);
 }
 
 rows.forEach((row, rowIndex) => {
@@ -60,15 +82,25 @@ rows.forEach((row, rowIndex) => {
       image.alt = labels[key] ?? key;
       image.draggable = false;
       button.append(image);
+    } else if (/^[a-z]$/i.test(key)) {
+      letterButtons.push({ button, letter: key });
+      button.textContent = shiftActive
+        ? key.toUpperCase()
+        : key.toLowerCase();
     } else {
       button.textContent = key === "SPACE" ? "LEERTASTE" : key;
     }
+
+    button.addEventListener("pointerdown", () => {
+      animateKeyPress(button);
+    });
 
     if (key === "SHIFT") {
       button.addEventListener("click", () => {
         shiftActive = !shiftActive;
         button.setAttribute("aria-pressed", String(shiftActive));
         updateShiftIcon(button);
+        updateLetterCase();
       });
 
       button.setAttribute("aria-pressed", "false");
