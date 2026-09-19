@@ -29,6 +29,7 @@ keyboard.className = "keyboard";
 keyboard.setAttribute("aria-label", "Bildschirmtastatur");
 
 let shiftActive = false;
+let shiftButton: HTMLButtonElement | null = null;
 const letterButtons: Array<{ button: HTMLButtonElement; letter: string }> = [];
 
 function updateShiftIcon(button: HTMLButtonElement) {
@@ -52,6 +53,17 @@ function updateLetterCase() {
     button.textContent = displayedLetter;
     button.setAttribute("aria-label", displayedLetter);
   }
+}
+
+function setShiftActive(active: boolean) {
+  shiftActive = active;
+
+  if (shiftButton) {
+    shiftButton.setAttribute("aria-pressed", String(shiftActive));
+    updateShiftIcon(shiftButton);
+  }
+
+  updateLetterCase();
 }
 
 function animateKeyPress(button: HTMLButtonElement) {
@@ -88,6 +100,12 @@ rows.forEach((row, rowIndex) => {
       button.textContent = shiftActive
         ? key.toUpperCase()
         : key.toLowerCase();
+
+      button.addEventListener("click", () => {
+        if (shiftActive) {
+          setShiftActive(false);
+        }
+      });
     } else {
       button.textContent = key === "SPACE" ? "LEERZEICHEN" : key;
     }
@@ -97,11 +115,9 @@ rows.forEach((row, rowIndex) => {
     });
 
     if (key === "SHIFT") {
+      shiftButton = button;
       button.addEventListener("click", () => {
-        shiftActive = !shiftActive;
-        button.setAttribute("aria-pressed", String(shiftActive));
-        updateShiftIcon(button);
-        updateLetterCase();
+        setShiftActive(!shiftActive);
       });
 
       button.setAttribute("aria-pressed", "false");
