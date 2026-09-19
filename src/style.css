@@ -4,11 +4,27 @@ body,
   width: 100%;
   height: 100%;
   margin: 0;
-  padding: 0;
   overflow: hidden;
 }
 
+html,
 body {
-  min-width: 100%;
-  min-height: 100%;
+  background: #ffffff;
+}
+
+body {
+  box-sizing: border-box;
+  padding: env(safe-area-inset-top, 0px)
+    env(safe-area-inset-right, 0px)
+    env(safe-area-inset-bottom, 0px)
+    env(safe-area-inset-left, 0px);
+}
+
+#app {
+  background-color: #ffffff;
+  background-image: url("./Gitter.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  overflow: hidden;
 }
