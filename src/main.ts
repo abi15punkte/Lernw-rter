@@ -14,7 +14,7 @@ const rows = [
 const labels: Record<string, string> = {
   SHIFT: "Umschalttaste",
   BACKSPACE: "Rücktaste",
-  SPACE: "Leertaste",
+  SPACE: "Leerzeichen",
   ENTER: "Enter",
 };
 
@@ -88,7 +88,7 @@ rows.forEach((row, rowIndex) => {
         ? key.toUpperCase()
         : key.toLowerCase();
     } else {
-      button.textContent = key === "SPACE" ? "LEERTASTE" : key;
+      button.textContent = key === "SPACE" ? "LEERZEICHEN" : key;
     }
 
     button.addEventListener("pointerdown", () => {
