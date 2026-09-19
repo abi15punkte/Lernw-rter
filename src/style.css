@@ -22,7 +22,7 @@ body {
   overflow: hidden;
 
   background-color: #ffffff;
-  background-image: url("../Gitter.png");
+  background-image: var(--grid-background);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: 100% 100%;
