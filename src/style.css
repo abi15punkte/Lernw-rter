@@ -90,9 +90,15 @@ body {
   border-radius: clamp(9px, 1.4vw, 16px);
   background: #ffffff;
   color: #172033;
-  font-family: inherit;
-  font-size: clamp(1rem, 2.9vw, 1.8rem);
-  font-weight: 800;
+  font-family:
+    "Comic Sans MS",
+    "Chalkboard SE",
+    "Marker Felt",
+    "Arial Rounded MT Bold",
+    ui-rounded,
+    cursive;
+  font-size: clamp(1.15rem, 3.4vw, 2.1rem);
+  font-weight: 700;
   line-height: 1;
   box-shadow: 0 4px 10px rgb(23 32 51 / 9%);
   cursor: pointer;
@@ -116,6 +122,30 @@ body {
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
+}
+
+.keyboard-key.is-pressed {
+  animation: keyboard-key-press 150ms ease-out;
+}
+
+@keyframes keyboard-key-press {
+  0% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 4px 10px rgb(23 32 51 / 9%);
+    filter: brightness(1);
+  }
+
+  45% {
+    transform: translateY(3px) scale(0.95);
+    box-shadow: 0 1px 3px rgb(23 32 51 / 16%);
+    filter: brightness(0.9) saturate(1.05);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 4px 10px rgb(23 32 51 / 9%);
+    filter: brightness(1);
+  }
 }
 
 .keyboard-row-1 .keyboard-key:nth-child(4n + 1) {
@@ -165,7 +195,7 @@ body {
 .keyboard-row-4 .keyboard-key:first-child {
   background: #fff1bc;
   letter-spacing: 0.08em;
-  font-size: clamp(0.78rem, 2vw, 1.1rem);
+  font-size: clamp(0.82rem, 2.2vw, 1.2rem);
 }
 
 .keyboard-row-4 .keyboard-key:last-child {
@@ -175,12 +205,6 @@ body {
 .keyboard-key:focus-visible {
   outline: 3px solid rgb(64 117 255 / 45%);
   outline-offset: 2px;
-}
-
-.keyboard-key:active {
-  transform: translateY(2px) scale(0.985);
-  box-shadow: 0 2px 5px rgb(23 32 51 / 10%);
-  filter: saturate(0.92);
 }
 
 @media (max-height: 700px) {
